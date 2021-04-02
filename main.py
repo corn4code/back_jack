@@ -96,3 +96,5 @@ elif points < 17:
 
 print(f"Your points: {points}")
 print(card_drawn_list, card_list)
+
+#it works
