@@ -6,6 +6,12 @@ def draw_card():
     card_list.remove(random_card)
     return card_drawn_list, card_list
 
+def draw_card_dealer():
+    random_card = random.choice(card_list)
+    card_drawn_dealer_list.append(random_card)
+    card_list.remove(random_card)
+    return card_drawn_dealer_list, card_list
+
 #cross cards
 cross_two = 2
 cross_three = 3
@@ -62,12 +68,16 @@ card_list = sum(card_list, [])
 card_drawn_list = []
 points = 0
 another_card = True
+card_drawn_dealer_list = []
 
 #first to cards
 for i in range(0, 2):
     draw_card()
+    draw_card_dealer()
     points = sum(card_drawn_list)
-print(f"you're at {points} right now")
+#print(f"you're at {points} right now")
+print(f"Your cards: {card_drawn_list}")
+print(f"Dealers first card: {card_drawn_dealer_list}")
 
 if 17 <= points <= 21:
     print(f"Your points {points}")
@@ -95,6 +105,6 @@ elif points < 17:
                 break
 
 print(f"Your points: {points}")
-print(card_drawn_list, card_list)
+print(card_drawn_list, card_list, card_drawn_dealer_list)
 
 #it works
