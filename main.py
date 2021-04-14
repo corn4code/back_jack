@@ -27,6 +27,7 @@ cross_ten = 10
 cross_boy = 10
 cross_queen = 10
 cross_king = 10
+cross_ace = 11
 
 
 # karo cards
@@ -42,6 +43,7 @@ karo_ten = 10
 karo_boy = 10
 karo_queen = 10
 karo_king = 10
+karo_ace = 11
 
 # pik cards
 pik_two = 2
@@ -56,6 +58,7 @@ pik_ten = 10
 pik_boy = 10
 pik_queen = 10
 pik_king = 10
+pik_ace = 11
 
 # heart cards
 heart_two = 2
@@ -70,14 +73,14 @@ heart_ten = 10
 heart_boy = 10
 heart_queen = 10
 heart_king = 10
-
+heart_ace = 11
 
 # game
 draw = 5
-pik_card_list = [pik_two, pik_three, pik_four, pik_five, pik_six, pik_seven, pik_eight, pik_nine, pik_ten, pik_boy, pik_queen, pik_king]
-heart_card_list = [heart_two, heart_three, heart_four, heart_five, heart_six, heart_seven, heart_eight, heart_nine, heart_ten, heart_boy, heart_queen, heart_king]
-cross_card_list = [cross_two, cross_three, cross_four, cross_five, cross_six, cross_seven, cross_eight, cross_nine, cross_ten, cross_boy, cross_queen, cross_king]
-karo_card_list = [karo_two, karo_three, karo_four, karo_five, karo_six, karo_seven, karo_eight, karo_nine, karo_ten, karo_boy, karo_queen, karo_king]
+pik_card_list = [pik_two, pik_three, pik_four, pik_five, pik_six, pik_seven, pik_eight, pik_nine, pik_ten, pik_boy, pik_queen, pik_king, pik_ace]
+heart_card_list = [heart_two, heart_three, heart_four, heart_five, heart_six, heart_seven, heart_eight, heart_nine, heart_ten, heart_boy, heart_queen, heart_king, heart_ace]
+cross_card_list = [cross_two, cross_three, cross_four, cross_five, cross_six, cross_seven, cross_eight, cross_nine, cross_ten, cross_boy, cross_queen, cross_king, cross_ace]
+karo_card_list = [karo_two, karo_three, karo_four, karo_five, karo_six, karo_seven, karo_eight, karo_nine, karo_ten, karo_boy, karo_queen, karo_king, karo_ace]
 card_list = [pik_card_list, cross_card_list, heart_card_list, karo_card_list]
 card_list = sum(card_list, [])
 
@@ -102,8 +105,8 @@ print(f"you're at {points_player} right now ")
 if 17 <= points_player <= 21:
     print(f"Your points {points_player} ")
 
-elif points_player > 21.5:
-    print("bust")
+elif points_player == 21:
+    print("Black Jack")
 
 elif points_player < 17:
 
@@ -124,15 +127,18 @@ elif points_player < 17:
                 another_card = False
 
             if points_player == 21:
-                print("Black Jack")
                 another_card = False
 
             if another_card is False:
                 break
 
 points_dealer = sum(card_drawn_list_dealer)
-if points_dealer < 17:
-    dealer_draw_card()
+while True:
+    if points_dealer < 17:
+        dealer_draw_card()
+        points_dealer = sum(card_drawn_list_dealer)
+    if points_player > 17:
+        break
 print("-----------------")
 if 21.5 > points_player > points_dealer:
     print("you win")
