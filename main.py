@@ -132,13 +132,21 @@ elif points_player < 17:
             if another_card is False:
                 break
 
-points_dealer = sum(card_drawn_list_dealer)
+# test
+# card_drawn_list_dealer = [pik_ace, pik_five, karo_king]
+# points_dealer = sum(card_drawn_list_dealer)
+
 while True:
     if points_dealer < 17:
         dealer_draw_card()
         points_dealer = sum(card_drawn_list_dealer)
+    # add checking for ace value
+    # if points_dealer > 21:
+    #    pass
     if points_player > 17:
         break
+
+
 print("-----------------")
 if 21.5 > points_player > points_dealer:
     print("you win")
