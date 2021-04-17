@@ -14,6 +14,9 @@ def dealer_draw_card():
     return card_drawn_list_dealer, card_list
 
 
+def get_ace_value():
+    pass
+
 # cross cards
 cross_two = 2
 cross_three = 3
