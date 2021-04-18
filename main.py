@@ -14,8 +14,13 @@ def dealer_draw_card():
     return card_drawn_list_dealer, card_list
 
 
-def get_ace_value():
+def get_ace_value_dealer():
     pass
+
+
+def get_ace_value_player():
+    pass
+
 
 # cross cards
 cross_two = 2
@@ -79,14 +84,16 @@ heart_king = 10
 heart_ace = 11
 
 # game
-draw = 5
+# draw = 5
 pik_card_list = [pik_two, pik_three, pik_four, pik_five, pik_six, pik_seven, pik_eight, pik_nine, pik_ten, pik_boy, pik_queen, pik_king, pik_ace]
 heart_card_list = [heart_two, heart_three, heart_four, heart_five, heart_six, heart_seven, heart_eight, heart_nine, heart_ten, heart_boy, heart_queen, heart_king, heart_ace]
 cross_card_list = [cross_two, cross_three, cross_four, cross_five, cross_six, cross_seven, cross_eight, cross_nine, cross_ten, cross_boy, cross_queen, cross_king, cross_ace]
 karo_card_list = [karo_two, karo_three, karo_four, karo_five, karo_six, karo_seven, karo_eight, karo_nine, karo_ten, karo_boy, karo_queen, karo_king, karo_ace]
 card_list = [pik_card_list, cross_card_list, heart_card_list, karo_card_list]
 card_list = sum(card_list, [])
-
+game_active = True
+wins_player = 0
+wins_dealer = 0
 
 # variables for player
 card_drawn_list_player = []
@@ -97,67 +104,102 @@ another_card = True
 card_drawn_list_dealer = []
 points_dealer = 0
 
+
 # first to cards
-for i in range(0, 2):
-    draw_card()
-    points_player = sum(card_drawn_list_player)
-    dealer_draw_card()
-print(f"Dealers first card: {card_drawn_list_dealer [0]}")
-print(f"you're at {points_player} right now ")
-
-if 17 <= points_player <= 21:
-    print(f"Your points {points_player} ")
-
-elif points_player == 21:
-    print("Black Jack")
-
-elif points_player < 17:
-
-    while True:
-        if another_card is True:
-            get_card = input("Hit? (y/n) ")
-
-            if get_card == "y":
+if __name__ == "__main__":
+    while game_active:
+        ask_new_game = input("New game? (y/n): ")
+        if ask_new_game == "y":
+            for i in range(0, 2):
                 draw_card()
                 points_player = sum(card_drawn_list_player)
-                print(f"you're at {points_player} ")
+                dealer_draw_card()
+            print(f"Dealers first card: {card_drawn_list_dealer [0]}")
+            print(f"your cards: {card_drawn_list_player}")
+            print(f"you're at {points_player} right now ")
 
-            elif get_card == "n":
-                another_card = False
-
-            if points_player > 21:
-                print("bust")
+            if 17 <= points_player <= 21:
+                print(f"Your points {points_player} ")
                 another_card = False
 
             if points_player == 21:
-                another_card = False
-
-            if another_card is False:
-                break
-
-# test
-# card_drawn_list_dealer = [pik_ace, pik_five, karo_king]
-# points_dealer = sum(card_drawn_list_dealer)
-
-while True:
-    if points_dealer < 17:
-        dealer_draw_card()
-        points_dealer = sum(card_drawn_list_dealer)
-    # add checking for ace value
-    # if points_dealer > 21:
-    #    pass
-    if points_player > 17:
-        break
+                print("Black Jack")
 
 
-print("-----------------")
-if 21.5 > points_player > points_dealer:
-    print("you win")
-if points_player < points_dealer or points_player > 21:
-    print("you lose")
-if points_player == points_dealer:
-    print("push")
-print(f"Your points: {points_player}")
-print(f"Dealers points: {points_dealer}")
-print("-----------------")
-print(f"cards player {card_drawn_list_player}, rest cards {card_list}, cards dealer {card_drawn_list_dealer}")
+            if points_player < 17:
+
+                while True:
+                    if another_card is True:
+                        get_card = input("Hit? (y/n) ")
+
+                        if get_card == "y":
+                            draw_card()
+                            print(f"your cards: {card_drawn_list_player}")
+                            points_player = sum(card_drawn_list_player)
+                            print(f"you're at {points_player} ")
+
+                        elif get_card == "n":
+                            another_card = False
+
+                        if points_player > 21:
+                            print("bust")
+                            another_card = False
+
+                        if points_player == 21:
+                            another_card = False
+
+                    if another_card is False:
+                        break
+
+            while True:
+                points_dealer = sum(card_drawn_list_dealer)
+                if points_dealer < 17 and points_player < 21:
+                    dealer_draw_card()
+                    points_dealer = sum(card_drawn_list_dealer)
+                # add checking for ace value
+                # if points_dealer > 21:
+                #    pass
+                if points_player > 17:
+                    break
+
+
+            print("-----------------")
+            if points_player == 21:
+                print("you win")
+                wins_player +=1
+            if 21.5 > points_player > points_dealer:
+                print("you win")
+                wins_player += 1
+            if points_player < points_dealer and points_dealer < 21.5:
+                print("you lose")
+                wins_dealer += 1
+            if  points_player > 21:
+                print("you lose")
+                wins_dealer += 1
+            if points_player == points_dealer:
+                print("push")
+            print(f"Your points: {points_player}")
+            print(f"Dealers points: {points_dealer}")
+            print("-----------------")
+            print(f"cards player {card_drawn_list_player}, rest cards {card_list}, cards dealer {card_drawn_list_dealer}")
+            print(f"your wins: {wins_player}")
+            print(f"dealers wins: {wins_dealer}")
+            pik_card_list = [pik_two, pik_three, pik_four, pik_five, pik_six, pik_seven, pik_eight, pik_nine, pik_ten, pik_boy, pik_queen, pik_king, pik_ace]
+            heart_card_list = [heart_two, heart_three, heart_four, heart_five, heart_six, heart_seven, heart_eight, heart_nine, heart_ten, heart_boy, heart_queen, heart_king, heart_ace]
+            cross_card_list = [cross_two, cross_three, cross_four, cross_five, cross_six, cross_seven, cross_eight, cross_nine, cross_ten, cross_boy, cross_queen, cross_king, cross_ace]
+            karo_card_list = [karo_two, karo_three, karo_four, karo_five, karo_six, karo_seven, karo_eight, karo_nine, karo_ten, karo_boy, karo_queen, karo_king, karo_ace]
+            card_list = [pik_card_list, cross_card_list, heart_card_list, karo_card_list]
+            card_list = sum(card_list, [])
+            game_active = True
+
+            # variables for player
+            card_drawn_list_player = []
+            points_player = 0
+            another_card = True
+
+            # variables for dealer
+            card_drawn_list_dealer = []
+            points_dealer = 0
+
+        if ask_new_game == "n":
+            game_active = False
