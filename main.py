@@ -170,7 +170,7 @@ if __name__ == "__main__":
             if 21.5 > points_player > points_dealer:
                 print("you win")
                 wins_player += 1
-            if points_player < points_dealer and points_dealer < 21.5:
+            if points_player < points_dealer < 21.5:
                 print("you lose")
                 wins_dealer += 1
             if  points_player > 21:
@@ -181,9 +181,10 @@ if __name__ == "__main__":
             print(f"Your points: {points_player}")
             print(f"Dealers points: {points_dealer}")
             print("-----------------")
-            print(f"cards player {card_drawn_list_player}, rest cards {card_list}, cards dealer {card_drawn_list_dealer}")
+            print(f"cards player {card_drawn_list_player}, cards dealer {card_drawn_list_dealer}, rest cards {card_list}")
             print(f"your wins: {wins_player}")
             print(f"dealers wins: {wins_dealer}")
+            print("-----------------")
             pik_card_list = [pik_two, pik_three, pik_four, pik_five, pik_six, pik_seven, pik_eight, pik_nine, pik_ten, pik_boy, pik_queen, pik_king, pik_ace]
             heart_card_list = [heart_two, heart_three, heart_four, heart_five, heart_six, heart_seven, heart_eight, heart_nine, heart_ten, heart_boy, heart_queen, heart_king, heart_ace]
             cross_card_list = [cross_two, cross_three, cross_four, cross_five, cross_six, cross_seven, cross_eight, cross_nine, cross_ten, cross_boy, cross_queen, cross_king, cross_ace]
