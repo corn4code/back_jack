@@ -1,5 +1,6 @@
 import random
 
+
 def draw_card():
     random_card = random.choice(card_list)
     card_drawn_list_player.append(random_card)
@@ -18,9 +19,37 @@ def get_ace_value_dealer():
     pass
 
 
-def get_ace_value_player():
-    pass
+# just temporary solve
+def get_karo_ace_value_player(card_drawn_list_player):
+    global points_player
+    card_drawn_list_player.remove(karo_ace)
+    card_drawn_list_player.append(1)
+    points_player = sum(card_drawn_list_player)
+    return card_drawn_list_player, points_player
 
+
+def get_heart_ace_value_player(card_drawn_list_player):
+    global points_player
+    card_drawn_list_player.remove(heart_ace)
+    card_drawn_list_player.append(1)
+    points_player = sum(card_drawn_list_player)
+    return card_drawn_list_player, points_player
+
+
+def get_pik_ace_value_player(card_drawn_list_player):
+    global points_player
+    card_drawn_list_player.remove(pik_ace)
+    card_drawn_list_player.append(1)
+    points_player = sum(card_drawn_list_player)
+    return card_drawn_list_player, points_player
+
+
+def get_cross_ace_value_player(card_drawn_list_player):
+    global points_player
+    card_drawn_list_player.remove(cross_ace)
+    card_drawn_list_player.append(1)
+    points_player = sum(card_drawn_list_player)
+    return card_drawn_list_player, points_player
 
 # cross cards
 cross_two = 2
@@ -83,8 +112,7 @@ heart_queen = 10
 heart_king = 10
 heart_ace = 11
 
-# game
-# draw = 5
+# game Variables
 pik_card_list = [pik_two, pik_three, pik_four, pik_five, pik_six, pik_seven, pik_eight, pik_nine, pik_ten, pik_boy, pik_queen, pik_king, pik_ace]
 heart_card_list = [heart_two, heart_three, heart_four, heart_five, heart_six, heart_seven, heart_eight, heart_nine, heart_ten, heart_boy, heart_queen, heart_king, heart_ace]
 cross_card_list = [cross_two, cross_three, cross_four, cross_five, cross_six, cross_seven, cross_eight, cross_nine, cross_ten, cross_boy, cross_queen, cross_king, cross_ace]
@@ -110,24 +138,32 @@ if __name__ == "__main__":
     while game_active:
         ask_new_game = input("New game? (y/n): ")
         if ask_new_game == "y":
+            # draws your and dealers first two cards and gets your points
             for i in range(0, 2):
                 draw_card()
                 points_player = sum(card_drawn_list_player)
                 dealer_draw_card()
+                points_dealer = sum(card_drawn_list_dealer)
             print(f"Dealers first card: {card_drawn_list_dealer [0]}")
             print(f"your cards: {card_drawn_list_player}")
             print(f"you're at {points_player} right now ")
 
             if 17 <= points_player <= 21:
-                print(f"Your points {points_player} ")
-                another_card = False
+                # doesn't stop if ace exists because it can be worth less --> choice at player else player can't hit
+                if karo_ace or cross_ace or pik_ace or heart_ace in card_drawn_list_player:
+                    print("You have an ace")
+                    continue
+                else:
+                    print(f"Your points {points_player} ")
+                    another_card = False
 
             if points_player == 21:
                 print("Black Jack")
 
 
             if points_player < 17:
-
+                card_drawn_list_player = [karo_ace, karo_six, karo_seven]
+                # asks if you want a new card and refreshes the points
                 while True:
                     if another_card is True:
                         get_card = input("Hit? (y/n) ")
@@ -142,15 +178,28 @@ if __name__ == "__main__":
                             another_card = False
 
                         if points_player > 21:
-                            print("bust")
-                            another_card = False
+                            if karo_ace in card_drawn_list_player:
+                                get_karo_ace_value_player(card_drawn_list_player)
+                            elif heart_ace in card_drawn_list_player:
+                                get_heart_ace_value_player(card_drawn_list_player)
+                            elif pik_ace in card_drawn_list_player:
+                                get_pik_ace_value_player(card_drawn_list_player)
+                            elif cross_ace in card_drawn_list_player:
+                                get_cross_ace_value_player(card_drawn_list_player)
+                            else:
+                                print("bust")
+                                another_card = False
 
                         if points_player == 21:
+                            another_card = False
+
+                        if points_player > 16.5:
                             another_card = False
 
                     if another_card is False:
                         break
 
+            # decision if dealer gets another card or not
             while True:
                 points_dealer = sum(card_drawn_list_dealer)
                 if points_dealer < 17 and points_player < 21:
@@ -159,15 +208,18 @@ if __name__ == "__main__":
                 # add checking for ace value
                 # if points_dealer > 21:
                 #    pass
-                if points_player > 17:
+                if points_dealer > 17:
                     break
 
-
+            # this checks if you won or lose
             print("-----------------")
             if points_player == 21:
                 print("you win")
                 wins_player +=1
             if 21.5 > points_player > points_dealer:
+                print("you win")
+                wins_player += 1
+            if points_dealer > 21 and points_player < 21.5:
                 print("you win")
                 wins_player += 1
             if points_player < points_dealer < 21.5:
