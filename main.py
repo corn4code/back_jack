@@ -280,3 +280,5 @@ if __name__ == "__main__":
 
         if ask_new_game == "n":
             game_active = False
+# something does not work
+# when black jack or to certain score of points after initial draw or sometimes bust after drawn next card, program freezes
