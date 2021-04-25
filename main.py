@@ -1,6 +1,7 @@
 import random
 
 
+# draws card for player
 def draw_card():
     random_card = random.choice(card_list)
     card_drawn_list_player.append(random_card)
@@ -8,6 +9,7 @@ def draw_card():
     return card_drawn_list_player, card_list
 
 
+# draws card for dealer
 def dealer_draw_card():
     random_card = random.choice(card_list)
     card_drawn_list_dealer.append(random_card)
@@ -15,11 +17,8 @@ def dealer_draw_card():
     return card_drawn_list_dealer, card_list
 
 
-def get_ace_value_dealer():
-    pass
-
-
-# just temporary solve
+# just temporary solve for ace values
+# get value of ace for player
 def get_karo_ace_value_player(card_drawn_list_player):
     global points_player
     card_drawn_list_player.remove(karo_ace)
@@ -50,6 +49,40 @@ def get_cross_ace_value_player(card_drawn_list_player):
     card_drawn_list_player.append(1)
     points_player = sum(card_drawn_list_player)
     return card_drawn_list_player, points_player
+
+
+# get value of ace for dealer
+def get_karo_ace_value_dealer(card_drawn_list_dealer):
+    global points_dealer
+    card_drawn_list_dealer.remove(karo_ace)
+    card_drawn_list_dealer.append(1)
+    points_dealer = sum(card_drawn_list_dealer)
+    return card_drawn_list_dealer, points_dealer
+
+
+def get_heart_ace_value_dealer(card_drawn_list_dealer):
+    global points_dealer
+    card_drawn_list_dealer.remove(heart_ace)
+    card_drawn_list_dealer.append(1)
+    points_dealer = sum(card_drawn_list_dealer)
+    return card_drawn_list_dealer, points_dealer
+
+
+def get_pik_ace_value_dealer(card_drawn_list_dealer):
+    global points_dealer
+    card_drawn_list_dealer.remove(pik_ace)
+    card_drawn_list_dealer.append(1)
+    points_dealer = sum(card_drawn_list_dealer)
+    return card_drawn_list_dealer, points_dealer
+
+
+def get_karo_ace_value_cross(card_drawn_list_dealer):
+    global points_dealer
+    card_drawn_list_dealer.remove(cross_ace)
+    card_drawn_list_dealer.append(1)
+    points_dealer = sum(card_drawn_list_dealer)
+    return card_drawn_list_dealer, points_dealer
+
 
 # cross cards
 cross_two = 2
@@ -150,19 +183,17 @@ if __name__ == "__main__":
 
             if 17 <= points_player <= 21:
                 # doesn't stop if ace exists because it can be worth less --> choice at player else player can't hit
-                if karo_ace or cross_ace or pik_ace or heart_ace in card_drawn_list_player:
+                if points_player == 21:
+                    print("Black Jack")
+                    another_card = False
+                elif karo_ace or cross_ace or pik_ace or heart_ace in card_drawn_list_player:
                     print("You have an ace")
                     continue
                 else:
                     print(f"Your points {points_player} ")
                     another_card = False
 
-            if points_player == 21:
-                print("Black Jack")
-
-
             if points_player < 17:
-                card_drawn_list_player = [karo_ace, karo_six, karo_seven]
                 # asks if you want a new card and refreshes the points
                 while True:
                     if another_card is True:
@@ -189,6 +220,7 @@ if __name__ == "__main__":
                             else:
                                 print("bust")
                                 another_card = False
+                                break
 
                         if points_player == 21:
                             another_card = False
@@ -196,7 +228,7 @@ if __name__ == "__main__":
                         if points_player > 16.5:
                             another_card = False
 
-                    if another_card is False:
+                    if another_card == False:
                         break
 
             # decision if dealer gets another card or not
@@ -215,7 +247,7 @@ if __name__ == "__main__":
             print("-----------------")
             if points_player == 21:
                 print("you win")
-                wins_player +=1
+                wins_player += 1
             if 21.5 > points_player > points_dealer:
                 print("you win")
                 wins_player += 1
@@ -225,7 +257,7 @@ if __name__ == "__main__":
             if points_player < points_dealer < 21.5:
                 print("you lose")
                 wins_dealer += 1
-            if  points_player > 21:
+            if points_player > 21:
                 print("you lose")
                 wins_dealer += 1
             if points_player == points_dealer:
