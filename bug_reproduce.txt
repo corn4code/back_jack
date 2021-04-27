@@ -1,0 +1,4 @@
+get a point value of 17 - 20
+or a black jack
+or overdraw
+doesn't always work
