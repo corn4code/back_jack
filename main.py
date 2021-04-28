@@ -17,7 +17,6 @@ def dealer_draw_card():
     return card_drawn_list_dealer, card_list
 
 
-# just temporary solve for ace values
 # get value of ace for player
 def get_karo_ace_value_player(card_drawn_list_player):
     global points_player
@@ -235,23 +234,28 @@ if __name__ == "__main__":
                     elif get_card == "n":
                         another_card = False
             # decision if dealer gets another card or not
+            if points_player < 21:
+                new_card_for_dealer = True
+            if points_player > 21:
+                new_card_for_dealer = False
             while new_card_for_dealer:
                 points_dealer = sum(card_drawn_list_dealer)
-                if points_dealer < 17 and points_player < 21:
+
+                if points_dealer < 17:
                     dealer_draw_card()
                     points_dealer = sum(card_drawn_list_dealer)
+
                 # checks the value of ace in dealers cards
+                if karo_ace in card_drawn_list_dealer and points_dealer > 21.5:
+                    get_karo_ace_value_dealer(card_drawn_list_dealer)
+                if heart_ace in card_drawn_list_dealer and points_dealer > 21.5:
+                    get_heart_ace_value_dealer(card_drawn_list_dealer)
+                if pik_ace in card_drawn_list_dealer and points_dealer > 21.5:
+                    get_pik_ace_value_dealer(card_drawn_list_dealer)
+                if cross_ace in card_drawn_list_dealer and points_dealer > 21.5:
+                    get_cross_ace_value_dealer(card_drawn_list_dealer)
                 if points_dealer > 17:
-                    if karo_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                        get_karo_ace_value_dealer(card_drawn_list_dealer)
-                    elif heart_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                        get_heart_ace_value_dealer(card_drawn_list_dealer)
-                    elif pik_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                        get_pik_ace_value_dealer(card_drawn_list_dealer)
-                    elif cross_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                        get_cross_ace_value_dealer(card_drawn_list_dealer)
-                    else:
-                        break
+                    break
 
             # this checks if you won or lost
             print("-----------------")
@@ -280,5 +284,3 @@ if __name__ == "__main__":
 
         if ask_new_game == "n":
             game_active = False
-# something does not work
-# when black jack or to certain score of points after initial draw or sometimes bust after drawn next card, program freezes
