@@ -157,7 +157,7 @@ card_list = sum(card_list, [])
 game_active = True
 wins_player = 0
 wins_dealer = 0
-
+black_jack_game = True
 # variables for player
 card_drawn_list_player = []
 points_player = 0
@@ -171,127 +171,130 @@ new_card_for_dealer = True
 
 # first to cards
 if __name__ == "__main__":
-    while game_active:
-        card_list = [pik_card_list, cross_card_list, heart_card_list, karo_card_list]
-        card_list = sum(card_list, [])
-        game_active = True
+    while black_jack_game:
+        ask_new_game = input("New Game? (y/n)").lower()
+        if ask_new_game == "y":
+            while game_active:
+                card_list = [pik_card_list, cross_card_list, heart_card_list, karo_card_list]
+                card_list = sum(card_list, [])
+                game_active = True
 
-        # variables for player
-        card_drawn_list_player = []
-        points_player = 0
-        another_card = True
+                # variables for player
+                card_drawn_list_player = []
+                points_player = 0
+                another_card = True
 
-        # variables for dealer
-        card_drawn_list_dealer = []
-        points_dealer = 0
-        ask_new_round = input("New round? (y/n): ")
-        if ask_new_round == "y":
-            # draws your and dealers first two cards and gets your points
-            print(f"you have {money_player} bucks")
-            user_bet = int(input("how much do you bet? "))
-            money_player -= user_bet
-            for i in range(0, 2):
-                draw_card()
-                points_player = sum(card_drawn_list_player)
-                dealer_draw_card()
-                points_dealer = sum(card_drawn_list_dealer)
-            print(f"Dealers first card: {card_drawn_list_dealer[0]}")
-            print(f"your cards: {card_drawn_list_player}")
-            print(f"you're at {points_player} right now ")
-            # doesn't stop if ace exists because it can be worth less --> choice at player else player can't hit
-            if points_player == 21:
-                print("Black Jack")
-                another_card = False
-                money_player += user_bet
-
-            if 21 > points_player > 17:
-                print(f"Your points {points_player} ")
-                another_card = False
-
-
-            if points_player < 17:
-                # asks if you want a new card and refreshes the points
-                while another_card:
-                    get_card = input("Hit? (y/n) ")
-                    if get_card == "y":
+                # variables for dealer
+                card_drawn_list_dealer = []
+                points_dealer = 0
+                ask_new_round = input("New round? (y/n): ").lower()
+                if ask_new_round == "y":
+                    # draws your and dealers first two cards and gets your points
+                    print(f"you have {money_player} bucks")
+                    user_bet = int(input("how much do you bet? "))
+                    money_player -= user_bet
+                    for i in range(0, 2):
                         draw_card()
-                        print(f"your cards: {card_drawn_list_player}")
                         points_player = sum(card_drawn_list_player)
-                        if karo_ace in card_drawn_list_player and points_player > 21.5:
-                            get_karo_ace_value_player(card_drawn_list_player)
-                        if heart_ace in card_drawn_list_player and points_player > 21.5:
-                            get_heart_ace_value_player(card_drawn_list_player)
-                        if pik_ace in card_drawn_list_player and points_player > 21.5:
-                            get_pik_ace_value_player(card_drawn_list_player)
-                        if cross_ace in card_drawn_list_player and points_player > 21.5:
-                            get_cross_ace_value_player(card_drawn_list_player)
-                        points_player = sum(card_drawn_list_player)
-                        print(f"you're at {points_player} ")
-                        if points_player > 21.5:
-                            print("bust")
-                            another_card = False
-                            break
-
-                        if 21.5 > points_player > 16.5:
-                            another_card = False
-                            break
-                    elif get_card == "n":
+                        dealer_draw_card()
+                        points_dealer = sum(card_drawn_list_dealer)
+                    print(f"Dealers first card: {card_drawn_list_dealer[0]}")
+                    print(f"your cards: {card_drawn_list_player}")
+                    print(f"you're at {points_player} right now ")
+                    # doesn't stop if ace exists because it can be worth less --> choice at player else player can't hit
+                    if points_player == 21:
+                        print("Black Jack")
                         another_card = False
-            # decision if dealer gets another card or not
-            if points_player == 21:
-                new_card_for_dealer = False
-            if points_player < 21:
-                new_card_for_dealer = True
-            if points_player > 21:
-                new_card_for_dealer = False
-            while new_card_for_dealer:
-                points_dealer = sum(card_drawn_list_dealer)
-                if points_dealer < 17:
-                    dealer_draw_card()
-                    points_dealer = sum(card_drawn_list_dealer)
+                        money_player += user_bet
 
-                # checks the value of ace in dealers cards
-                if karo_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                    get_karo_ace_value_dealer(card_drawn_list_dealer)
-                if heart_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                    get_heart_ace_value_dealer(card_drawn_list_dealer)
-                if pik_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                    get_pik_ace_value_dealer(card_drawn_list_dealer)
-                if cross_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                    get_cross_ace_value_dealer(card_drawn_list_dealer)
-                if points_dealer > 17:
-                    break
+                    if 21 > points_player > 17:
+                        print(f"Your points {points_player} ")
+                        another_card = False
 
-            # this checks if you won or lost
-            print("-----------------")
-            if 21.5 > points_player > points_dealer:
-                print("you win")
-                wins_player += 1
-                money_player += 2 * user_bet
-            if points_dealer > 21 and points_player < 21.5:
-                print("you win")
-                wins_player += 1
-                money_player += 2 * user_bet
-            if points_player < points_dealer < 21.5:
-                print("you lose")
-                wins_dealer += 1
-            if points_player > 21:
-                print("you lose")
-                wins_dealer += 1
-            if points_player == points_dealer:
-                print("push")
-                money_player += user_bet
-            print(f"Your points: {points_player}")
-            print(f"Dealers points: {points_dealer}")
-            print("-----------------")
-            print(f"your wins: {wins_player}")
-            print(f"dealers wins: {wins_dealer}")
-            print("-----------------")
-            print(f"money on your account {money_player}")
 
-        if ask_new_round == "n":
-            game_active = False
-        if money_player < 0.5:
-            game_active = False
+                    if points_player < 17:
+                        # asks if you want a new card and refreshes the points
+                        while another_card:
+                            get_card = input("Hit? (y/n) ").lower()
+                            if get_card == "y":
+                                draw_card()
+                                print(f"your cards: {card_drawn_list_player}")
+                                points_player = sum(card_drawn_list_player)
+                                if karo_ace in card_drawn_list_player and points_player > 21.5:
+                                    get_karo_ace_value_player(card_drawn_list_player)
+                                if heart_ace in card_drawn_list_player and points_player > 21.5:
+                                    get_heart_ace_value_player(card_drawn_list_player)
+                                if pik_ace in card_drawn_list_player and points_player > 21.5:
+                                    get_pik_ace_value_player(card_drawn_list_player)
+                                if cross_ace in card_drawn_list_player and points_player > 21.5:
+                                    get_cross_ace_value_player(card_drawn_list_player)
+                                points_player = sum(card_drawn_list_player)
+                                print(f"you're at {points_player} ")
+                                if points_player > 21.5:
+                                    print("bust")
+                                    another_card = False
+                                    break
 
-            # add ask for new game and set high score to money_player
+                                if 21.5 > points_player > 16.5:
+                                    another_card = False
+                                    break
+                            elif get_card == "n":
+                                another_card = False
+                    # decision if dealer gets another card or not
+                    if points_player == 21:
+                        new_card_for_dealer = False
+                    if points_player < 21:
+                        new_card_for_dealer = True
+                    if points_player > 21:
+                        new_card_for_dealer = False
+                    while new_card_for_dealer:
+                        points_dealer = sum(card_drawn_list_dealer)
+                        if points_dealer < 17:
+                            dealer_draw_card()
+                            points_dealer = sum(card_drawn_list_dealer)
+
+                        # checks the value of ace in dealers cards
+                        if karo_ace in card_drawn_list_dealer and points_dealer > 21.5:
+                            get_karo_ace_value_dealer(card_drawn_list_dealer)
+                        if heart_ace in card_drawn_list_dealer and points_dealer > 21.5:
+                            get_heart_ace_value_dealer(card_drawn_list_dealer)
+                        if pik_ace in card_drawn_list_dealer and points_dealer > 21.5:
+                            get_pik_ace_value_dealer(card_drawn_list_dealer)
+                        if cross_ace in card_drawn_list_dealer and points_dealer > 21.5:
+                            get_cross_ace_value_dealer(card_drawn_list_dealer)
+                        if points_dealer > 17:
+                            break
+
+                    # this checks if you won or lost
+                    print("-----------------")
+                    if 21.5 > points_player > points_dealer:
+                        print("you win")
+                        wins_player += 1
+                        money_player += 2 * user_bet
+                    if points_dealer > 21 and points_player < 21.5:
+                        print("you win")
+                        wins_player += 1
+                        money_player += 2 * user_bet
+                    if points_player < points_dealer < 21.5:
+                        print("you lose")
+                        wins_dealer += 1
+                    if points_player > 21:
+                        print("you lose")
+                        wins_dealer += 1
+                    if points_player == points_dealer:
+                        print("push")
+                        money_player += user_bet
+                    print(f"Your points: {points_player}")
+                    print(f"Dealers points: {points_dealer}")
+                    print("-----------------")
+                    print(f"your wins: {wins_player}")
+                    print(f"dealers wins: {wins_dealer}")
+                    print("-----------------")
+                    print(f"money on your account {money_player}")
+
+                if ask_new_round == "n":
+                    game_active = False
+                if money_player < 0.5:
+                    game_active = False
+        elif ask_new_game == "n":
+            black_jack_game = False
