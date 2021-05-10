@@ -184,7 +184,6 @@ if __name__ == "__main__":
         # variables for dealer
         card_drawn_list_dealer = []
         points_dealer = 0
-
         ask_new_round = input("New round? (y/n): ")
         if ask_new_round == "y":
             # draws your and dealers first two cards and gets your points
@@ -291,6 +290,8 @@ if __name__ == "__main__":
             print(f"money on your account {money_player}")
 
         if ask_new_round == "n":
+            game_active = False
+        if money_player < 0.5:
             game_active = False
 
             # add ask for new game and set high score to money_player
