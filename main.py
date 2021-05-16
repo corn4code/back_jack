@@ -161,7 +161,7 @@ wins_dealer = 0
 black_jack_game = True
 score = 0
 
-high_score_disk = open("high_score.txt", "w+")
+high_score_disk = open("high_score.txt", "r+")
 file_size = os.path.getsize("high_score.txt")
 if file_size == 0:
     high_score_disk.write(str("0"))
@@ -181,9 +181,10 @@ new_card_for_dealer = True
 # first to cards
 if __name__ == "__main__":
     while black_jack_game:
-        # print(f"Your high score: {high_score}")
+        print(f"Your high score: {high_score}")
         ask_new_game = input("New Game? (y/n)").lower()
         if ask_new_game == "y":
+            game_active = True
             while game_active:
                 card_list = [pik_card_list, cross_card_list, heart_card_list, karo_card_list]
                 card_list = sum(card_list, [])
