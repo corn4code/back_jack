@@ -185,6 +185,17 @@ if __name__ == "__main__":
         ask_new_game = input("New Game? (y/n)").lower()
         if ask_new_game == "y":
             game_active = True
+            wins_player = 0
+            wins_dealer = 0
+            black_jack_game = True
+            score = 0
+            card_drawn_list_player = []
+            points_player = 0
+            another_card = True
+            money_player = 1000
+            card_drawn_list_dealer = []
+            points_dealer = 0
+            new_card_for_dealer = True
             while game_active:
                 card_list = [pik_card_list, cross_card_list, heart_card_list, karo_card_list]
                 card_list = sum(card_list, [])
