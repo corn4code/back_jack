@@ -160,7 +160,7 @@ wins_player = 0
 wins_dealer = 0
 black_jack_game = True
 score = 0
-
+# loads a high score file
 high_score_disk = open("high_score.txt", "r+")
 file_size = os.path.getsize("high_score.txt")
 if file_size == 0:
