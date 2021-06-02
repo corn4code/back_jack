@@ -209,11 +209,21 @@ if __name__ == "__main__":
                 # variables for dealer
                 card_drawn_list_dealer = []
                 points_dealer = 0
+                bet_bigger_account = True
                 ask_new_round = input("New round? (y/n): ").lower()
                 if ask_new_round == "y":
                     # draws your and dealers first two cards and gets your points
                     print(f"you have {money_player} bucks")
-                    user_bet = int(input("how much do you bet? "))
+                    while bet_bigger_account:
+                        try:
+                            user_bet = int(input("how much do you bet? "))
+                            if user_bet <= money_player:
+                                bet_bigger_account = False
+                            elif user_bet > money_player:
+                                print("Not enough bucks! Try again lower!")
+                        except Exception:
+                            print("enter a number!")
+
                     money_player -= user_bet
                     for i in range(0, 2):
                         draw_card()
@@ -256,11 +266,9 @@ if __name__ == "__main__":
                                     another_card = False
                                     break
 
-                                # if 21.5 > points_player > 16.5:
-                                #     another_card = False
-                                #     break
                             if get_card == "n":
                                 another_card = False
+                                break
                     # decision if dealer gets another card or not
                     if points_player == 21:
                         new_card_for_dealer = False
@@ -322,9 +330,11 @@ if __name__ == "__main__":
                 if money_player < 0.5:
                     game_active = False
                     score = money_player
+                    # add deleting old high score
                     if score > high_score:
                         high_score = money_player
-                        high_score_disk.write(str(score))
+                        str_high_score.replace("0")
+                        high_score_disk.write((str(score)))
         elif ask_new_game == "n":
             black_jack_game = False
 
