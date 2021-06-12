@@ -165,7 +165,7 @@ high_score_disk = open("high_score.txt", "r+")
 file_size = os.path.getsize("high_score.txt")
 if file_size == 0:
     high_score_disk.write(str("0"))
-str_high_score = high_score_disk.read()
+str_high_score = high_score_disk.read().lstrip()
 high_score = int(str_high_score)
 # variables for player
 card_drawn_list_player = []
@@ -182,7 +182,7 @@ new_card_for_dealer = True
 if __name__ == "__main__":
     while black_jack_game:
         print(f"Your high score: {high_score}")
-        ask_new_game = input("New Game? (y/n)").lower()
+        ask_new_game = input("New Game? (y/n) ").lower()
         if ask_new_game == "y":
             game_active = True
             wins_player = 0
@@ -246,7 +246,10 @@ if __name__ == "__main__":
                     if points_player < 17:
                         # asks if you want a new card and refreshes the points
                         while another_card:
-                            get_card = input("Hit? (y/n) ").lower()
+                            get_card = input("Hit? (y/n) ").lower().strip()
+                            if get_card == "n":
+                                another_card = False
+                                break
                             if get_card == "y":
                                 draw_card()
                                 print(f"your cards: {card_drawn_list_player}")
@@ -266,9 +269,6 @@ if __name__ == "__main__":
                                     another_card = False
                                     break
 
-                            if get_card == "n":
-                                another_card = False
-                                break
                     # decision if dealer gets another card or not
                     if points_player == 21:
                         new_card_for_dealer = False
@@ -325,16 +325,14 @@ if __name__ == "__main__":
                     game_active = False
                     score = money_player
                     if score > high_score:
-                        high_score = score
-                        high_score_disk.write(str(score))
+                        new_high_score = str(score).lower().strip()
+                        high_score_disk.seek(0)
+                        high_score_disk.truncate(0)
+                        high_score_disk.write(new_high_score)
+                        high_score = new_high_score
                 if money_player < 0.5:
                     game_active = False
-                    score = money_player
-                    # add deleting old high score
-                    if score > high_score:
-                        high_score = money_player
-                        str_high_score.replace("0")
-                        high_score_disk.write((str(score)))
+
         elif ask_new_game == "n":
             black_jack_game = False
 
