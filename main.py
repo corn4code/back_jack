@@ -283,6 +283,7 @@ if __name__ == "__main__":
                             points_dealer = sum(card_drawn_list_dealer)
 
                         # checks the value of ace in dealers cards
+                        # this produces a bug
                         if karo_ace in card_drawn_list_dealer and points_dealer > 21.5:
                             get_karo_ace_value_dealer(card_drawn_list_dealer)
                         if heart_ace in card_drawn_list_dealer and points_dealer > 21.5:
