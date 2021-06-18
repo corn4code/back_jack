@@ -218,13 +218,13 @@ if __name__ == "__main__":
                         try:
                             user_bet = int(input("how much do you bet? "))
                             if user_bet <= money_player:
+                                money_player -= user_bet
                                 bet_bigger_account = False
                             elif user_bet > money_player:
                                 print("Not enough bucks! Try again lower!")
                         except Exception:
                             print("enter a number!")
 
-                    money_player -= user_bet
                     for i in range(0, 2):
                         draw_card()
                         points_player = sum(card_drawn_list_player)
@@ -270,30 +270,37 @@ if __name__ == "__main__":
                                     break
 
                     # decision if dealer gets another card or not
-                    if points_player == 21:
-                        new_card_for_dealer = False
-                    if points_player < 21:
-                        new_card_for_dealer = True
-                    if points_player > 21:
+                    # if points_player == 21:
+                    #     new_card_for_dealer = False
+                    # if points_player < 21:
+                    #     new_card_for_dealer = True
+                    points_dealer = sum(card_drawn_list_dealer)
+                    if points_player > 17:
                         new_card_for_dealer = False
                     while new_card_for_dealer:
                         points_dealer = sum(card_drawn_list_dealer)
-                        if points_dealer < 17:
+                        if points_dealer < 17 or points_dealer < 13:
                             dealer_draw_card()
                             points_dealer = sum(card_drawn_list_dealer)
 
                         # checks the value of ace in dealers cards
                         # this produces a bug
-                        if karo_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                            get_karo_ace_value_dealer(card_drawn_list_dealer)
-                        if heart_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                            get_heart_ace_value_dealer(card_drawn_list_dealer)
-                        if pik_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                            get_pik_ace_value_dealer(card_drawn_list_dealer)
-                        if cross_ace in card_drawn_list_dealer and points_dealer > 21.5:
-                            get_cross_ace_value_dealer(card_drawn_list_dealer)
+
                         if points_dealer > 17:
-                            break
+                            if points_dealer > 21.5:
+                                if karo_ace in card_drawn_list_dealer:
+                                    get_karo_ace_value_dealer(card_drawn_list_dealer)
+                            if points_dealer > 21.5:
+                                if heart_ace in card_drawn_list_dealer:
+                                    get_heart_ace_value_dealer(card_drawn_list_dealer)
+                            if points_dealer > 21.5:
+                                if pik_ace in card_drawn_list_dealer:
+                                    get_pik_ace_value_dealer(card_drawn_list_dealer)
+                            if points_dealer > 21.5:
+                                if cross_ace in card_drawn_list_dealer:
+                                    get_cross_ace_value_dealer(card_drawn_list_dealer)
+                            if points_dealer < 21.5:
+                                break
 
                     # this checks if you won or lost
                     print("-----------------")
