@@ -1,3 +1,3 @@
 # back_jack
 
-just a black jack I'm working on for practice
+just a black jack I worked on for practice
