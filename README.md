@@ -1,3 +1,3 @@
-# back_jack
+# black_jack
 
 just a black jack I worked on for practice
